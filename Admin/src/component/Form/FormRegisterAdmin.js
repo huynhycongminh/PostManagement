@@ -5,6 +5,8 @@ export default class FormRegisterAdmin extends Component {
   constructor(props) {
     super(props);
     this.state={
+      car: [],
+      cus: [],
       info:[]
     }
   }
@@ -14,6 +16,43 @@ export default class FormRegisterAdmin extends Component {
       .then((data) => {
         this.setState({info:data})
       })
+  }
+
+  RenderInfo(){  
+    this.state.info.map((info) => {
+      if(info.car !== null){
+        this.state.car.push(info)
+      } else{
+        this.state.cus.push(info)
+      }
+    })
+
+    return  this.state.car.map((info) => (
+              <tr>
+                <td>
+                  <input type="checkbox" name _id />
+                </td>
+                <td>{info.customer.name}</td>
+                <td>{info.customer.phoneNumber}</td>
+                <td>{info.customer.email}</td>
+                <td>{info.customer.address}</td>
+                <td>{info.car.name}</td>
+                <td>
+                  {this.StyleStatus(info.status)}
+                </td>
+              </tr>
+            ))
+
+  }
+
+  StyleStatus(status){
+    if(status === 0){
+      return <i className="fa fa-circle-o" />
+    } else if(status === 1){
+      return <i className="fa fa-check-circle" />
+    } else {
+      return <i className="fa fa-exclamation-circle" />
+    }
   }
 
   render() {
@@ -72,7 +111,7 @@ export default class FormRegisterAdmin extends Component {
             !Double click to view detail information{" "}
           </p>
           {/* Table Model */}
-          <table className="table table-striped table-model">
+          <table className="table table-striped">
             <thead>
               <tr>
                 <th scope="col">
@@ -88,8 +127,9 @@ export default class FormRegisterAdmin extends Component {
               </tr>
             </thead>
             <tbody>
+              {this.RenderInfo()}
               {
-                this.state.info.map((info) => (
+                this.state.cus.map((info) => (
                 <tr>
                 <td>
                   <input type="checkbox" name id />
@@ -99,9 +139,9 @@ export default class FormRegisterAdmin extends Component {
                 <td>{info.customer.phoneNumber}</td>
                 <td>{info.customer.email}</td>
                 <td>{info.customer.address}</td>
-                {/* <td>{info.car.name}</td> */}
+                <td></td>
                 <td>
-                  <i className="fa fa-check-circle" />
+                  {this.StyleStatus(info.status)}
                 </td>
               </tr>
                 ))
